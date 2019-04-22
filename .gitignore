@@ -1,0 +1,6 @@
+# IDE Resources
+.idea/
+
+# Ansible Resources
+*.retry
+

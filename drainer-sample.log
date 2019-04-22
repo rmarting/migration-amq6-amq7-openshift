@@ -1,0 +1,45 @@
+-XX:+UseParallelGC -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=40 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:+ExitOnOutOfMemoryError
+Attempting to migrate directory: (/opt/amq/data/split-1)
+Waiting for grace period to expire, remaining timeout is 27 seconds
+Attempting to obtain lock for directory: (/opt/amq/data/split-1)
+Successfully locked directory: (/opt/amq/data/split-1)
+2019-04-20 07:26:49 INFO  org.jboss.ce.amq.drain.BrokerServiceDrainer     - Data directory /opt/amq/data/split-1/serverData.
+2019-04-20 07:26:49 INFO  org.jboss.ce.amq.drain.BrokerServiceDrainer     - Creating network connector.
+2019-04-20 07:26:49 INFO  org.openshift.activemq.discoveryagent.kube.KubeDiscoveryAgentFactory     - Creating Kubernetes discovery agent for kube://broker-amq-mesh:61616/?queryInterval=3.
+2019-04-20 07:26:49 INFO  org.jboss.ce.amq.drain.BrokerServiceDrainer     - Starting broker.
+2019-04-20 07:26:49 INFO  org.apache.activemq.broker.BrokerService     - Using Persistence Adapter: KahaDBPersistenceAdapter[/opt/amq/data/split-1/serverData/kahadb]
+2019-04-20 07:26:49 INFO  org.apache.activemq.store.kahadb.MessageDatabase     - KahaDB is version 5
+2019-04-20 07:26:49 INFO  org.apache.activemq.store.kahadb.plist.PListStoreImpl     - PListStore:[/opt/amq/data/split-1/serverData/broker-drainer-2-h6fvw/tmp_storage] started
+I> No access restrictor found, access to any MBean is allowed
+Jolokia: Agent started with URL https://172.17.0.11:8778/jolokia/ 
+2019-04-20 07:26:50 INFO  org.apache.activemq.broker.BrokerService     - Apache ActiveMQ 5.11.0.redhat-630343 (broker-drainer-2-h6fvw, ID:broker-drainer-2-h6fvw-35114-1555745209911-0:1) is starting
+2019-04-20 07:26:50 INFO  org.openshift.activemq.discoveryagent.OpenShiftDiscoveryAgent     - Starting OpenShift discovery agent for service broker-amq-mesh transport type tcp
+2019-04-20 07:26:50 INFO  org.apache.activemq.network.NetworkConnector     - Network Connector DiscoveryNetworkConnector:NC:BrokerService[broker-drainer-2-h6fvw] started
+2019-04-20 07:26:50 INFO  org.apache.activemq.broker.BrokerService     - Apache ActiveMQ 5.11.0.redhat-630343 (broker-drainer-2-h6fvw, ID:broker-drainer-2-h6fvw-35114-1555745209911-0:1) started
+2019-04-20 07:26:50 INFO  org.apache.activemq.broker.BrokerService     - For help or more information please see: http://activemq.apache.org 
+2019-04-20 07:26:50 WARN  org.apache.activemq.broker.BrokerService     - Store limit is 102400 mb (current store usage is 3 mb). The data directory: /opt/amq/data/split-1/serverData/kahadb only has 24266 mb of usable space. - resetting to maximum available disk space: 24266 mb
+2019-04-20 07:26:50 WARN  org.apache.activemq.broker.BrokerService     - Temporary Store limit is 51200 mb (current store usage is 0 mb). The data directory: /opt/amq/data/split-1/serverData only has 24263 mb of usable space. - resetting to maximum available disk space: 24263 mb
+2019-04-20 07:26:50 INFO  org.jboss.ce.amq.drain.BrokerServiceDrainer     - Started broker.
+2019-04-20 07:26:50 INFO  org.jboss.ce.amq.drain.BrokerServiceDrainer     - Still 5000 msgs left to migrate ...
+2019-04-20 07:26:53 INFO  org.openshift.activemq.discoveryagent.OpenShiftDiscoveryAgent     - Adding service: [tcp://172.17.0.9:61616, failed:false, connectionFailures:0]
+2019-04-20 07:26:53 INFO  org.apache.activemq.network.DiscoveryNetworkConnector     - Establishing network connection from vm://broker-drainer-2-h6fvw to tcp://172.17.0.9:61616
+2019-04-20 07:26:53 INFO  org.apache.activemq.broker.TransportConnector     - Connector vm://broker-drainer-2-h6fvw started
+2019-04-20 07:26:53 INFO  org.apache.activemq.network.DemandForwardingBridgeSupport     - Network connection between vm://broker-drainer-2-h6fvw#0 and tcp:///172.17.0.9:61616@45886 (amq7-broker-amq-0.amq7-broker-amq-headless.test.svc.cluster.local) has been established.
+2019-04-20 07:26:55 INFO  org.jboss.ce.amq.drain.BrokerServiceDrainer     - Still 4970 msgs left to migrate ...
+2019-04-20 07:27:00 INFO  org.apache.activemq.broker.BrokerService     - Apache ActiveMQ 5.11.0.redhat-630343 (broker-drainer-2-h6fvw, ID:broker-drainer-2-h6fvw-35114-1555745209911-0:1) is shutting down
+2019-04-20 07:27:00 WARN  org.apache.activemq.broker.TransportConnection.Transport     - Transport Connection to: vm://broker-drainer-2-h6fvw#0 failed: org.apache.activemq.transport.TransportDisposedIOException: peer (vm://broker-drainer-2-h6fvw#0) stopped.
+2019-04-20 07:27:00 INFO  org.apache.activemq.broker.TransportConnector     - Connector vm://broker-drainer-2-h6fvw stopped
+2019-04-20 07:27:00 INFO  org.apache.activemq.network.DemandForwardingBridgeSupport     - broker-drainer-2-h6fvw bridge to amq7-broker-amq-0.amq7-broker-amq-headless.test.svc.cluster.local stopped
+2019-04-20 07:27:00 INFO  org.openshift.activemq.discoveryagent.OpenShiftDiscoveryAgent     - Stopping OpenShift discovery agent for service broker-amq-mesh transport type tcp
+2019-04-20 07:27:00 INFO  org.apache.activemq.network.NetworkConnector     - Network Connector DiscoveryNetworkConnector:NC:BrokerService[broker-drainer-2-h6fvw] stopped
+2019-04-20 07:27:00 INFO  org.apache.activemq.store.kahadb.plist.PListStoreImpl     - PListStore:[/opt/amq/data/split-1/serverData/broker-drainer-2-h6fvw/tmp_storage] stopped
+2019-04-20 07:27:00 INFO  org.apache.activemq.store.kahadb.KahaDBStore     - Stopping async queue tasks
+2019-04-20 07:27:00 INFO  org.apache.activemq.store.kahadb.KahaDBStore     - Stopping async topic tasks
+2019-04-20 07:27:00 INFO  org.apache.activemq.store.kahadb.KahaDBStore     - Stopped KahaDB
+2019-04-20 07:27:00 INFO  org.apache.activemq.broker.BrokerService     - Apache ActiveMQ 5.11.0.redhat-630343 (broker-drainer-2-h6fvw, ID:broker-drainer-2-h6fvw-35114-1555745209911-0:1) uptime 10.838 seconds
+2019-04-20 07:27:00 INFO  org.apache.activemq.broker.BrokerService     - Apache ActiveMQ 5.11.0.redhat-630343 (broker-drainer-2-h6fvw, ID:broker-drainer-2-h6fvw-35114-1555745209911-0:1) is shutdown
+2019-04-20 07:27:00 INFO  org.jboss.ce.amq.drain.BrokerServiceDrainer     - -- [CE] A-MQ migration finished. --
+Migration terminated with status 0 (T)
+Releasing lock: (/opt/amq/data/split-1)
+Finished Migration Check cycle, pausing for 30 seconds before resuming
+Finished Migration Check cycle, pausing for 30 seconds before resuming

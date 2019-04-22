@@ -1,0 +1,29 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars_files:
+  - vars/namespaces.yml
+  vars_prompt:
+  - name: "ocp"
+    prompt: "Enter OCP Master URL"
+    private: no
+  - name: "ocp_username"
+    prompt: "Enter OCP username"
+    private: no
+  - name: "ocp_password"
+    prompt: "Enter OCP password"
+    private: yes
+  tasks:
+  - name: "[include_role] Role Name: ocp-get-token"
+    include_role:
+      name: ocp-get-token
+  - name: "[include_role] Role Name: migration-amq6-to-amq7"
+    include_role:
+      name: migration-amq6-to-amq7
+    vars:
+      namespace: "{{ item.namespace }}"
+      amq_name: "{{ item.amq_name }}"
+      amq6_name: "{{ item.amq6_name }}"
+      state: "{{ item.state }}"
+    with_items: "{{ namespaces }}"
+    when: item.amq6_name is not undefined

@@ -1,0 +1,69 @@
+---
+- name: "[oc] Scale up AMQ 7 Broker"
+  command: "oc --token='{{ ocp_token }}' scale sts {{ amq_name }}-amq --replicas=1"
+
+- name: "[oc] Scale up AMQ 7 Scale Down Controller"
+  command: "oc --token='{{ ocp_token }}' scale deployment amq-broker-72-scaledown-controller-openshift-deployment --replicas=1"
+
+- name: "[oc] Wait for AMQ 7 Broker is ready"
+  shell: "oc get pods -l application={{ amq_name }} -o json"
+  register: oc_get_pods
+  until: oc_get_pods.stdout | from_json | json_query('items[*].status.containerStatuses[*].ready') | unique == [[True]]
+  retries: 10
+  delay: 30
+
+- name: "[oc] Patch AMQ 6 Services to balance connections to AMQ 7 Broker Pods"
+  command: "oc --token='{{ ocp_token }}' patch service {{ amq6_name }}-amq-{{ protocol }} --patch '{\"spec\":{\"selector\":{\"deploymentConfig\":\"{{ amq_name }}-amq\"}}}'"
+  with_items:
+    - tcp
+    - mqtt
+    - amqp
+    - stomp
+    - mesh
+  loop_control:
+    loop_var: protocol
+  ignore_errors: yes
+
+- name: "[oc] Scale down AMQ 6 Drainer to avoid drain messages"
+  command: "oc --token='{{ ocp_token }}' scale dc {{ amq6_name }}-drainer --replicas=0"
+
+- name: "[oc] Wait for AMQ 6 Drainer is terminated"
+  shell: "oc get pod -l deploymentconfig={{ amq6_name }}-drainer -o name"
+  register: oc_get_pod_drainer
+  until: oc_get_pod_drainer.stdout | length == 0
+  retries: 10
+  delay: 30
+
+- name: "[oc] Scale down AMQ 6 Broker to avoid new connections"
+  command: "oc --token='{{ ocp_token }}' scale dc {{ amq6_name }}-amq --replicas=0"
+
+- name: "[oc] Scale up AMQ 6 Drainer to drain messages"
+  command: "oc --token='{{ ocp_token }}' scale dc {{ amq6_name }}-drainer --replicas=1"
+
+- name: "[oc] Wait for AMQ 6 Drainer is ready"
+  shell: "oc get pods -l deploymentconfig={{ amq6_name }}-drainer -o json"
+  register: oc_get_pods_drainer
+  until: oc_get_pods_drainer.stdout | from_json | json_query('items[*].status.containerStatuses[*].ready') | unique == [[True]]
+  retries: 10
+  delay: 30
+
+- name: "[oc] Check AMQ 6 Drainer concluded two migration cycles"
+  shell: "oc logs $(oc get pod -l deploymentconfig={{ amq6_name }}-drainer -o name) | tail -n 2 | grep -i 'Finished Migration Check cycle, pausing for 30 seconds before resuming' | wc -l"
+  register: oc_log_drainer
+
+- name: "[oc] Check AMQ 6 Drainer concluded two migration cycles"
+  shell: "oc logs $(oc get pod -l deploymentconfig={{ amq6_name }}-drainer -o name) | tail -n 2 | grep -i 'Finished Migration Check cycle, pausing for 30 seconds before resuming' | wc -l"
+  register: oc_log_drainer
+  until: oc_log_drainer.stdout | int == 2
+  retries: 10
+  delay: 60
+
+- name: "[oc] Scale down AMQ 6 Drainer after finished migration"
+  command: "oc --token='{{ ocp_token }}' scale dc {{ amq6_name }}-drainer --replicas=0"
+
+- name: "[oc] Wait for AMQ 6 Drainer is terminated"
+  shell: "oc get pod -l deploymentconfig={{ amq6_name }}-drainer -o name"
+  register: oc_get_pod_drainer
+  until: oc_get_pod_drainer.stdout | length == 0
+  retries: 10
+  delay: 30

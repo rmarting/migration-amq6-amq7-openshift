@@ -1,0 +1,2 @@
+namespaces:
+- { namespace: amq6-to-amq7, amq6_name: broker , amq_name: amq7-broker, amq_replicas: 1, state: present }
