@@ -1,6 +1,8 @@
 # Migrate Red Hat JBoss A-MQ 6.3 to Red Hat AMQ 7.2 on OpenShift using Ansible
 
-This repo demonstrates how to migrate your Messaging Brokers deployed in OpenShift from Red Hat JBoss A-MQ 6.3 to
+Blog at [Red Hat Developer Portal](https://developers.redhat.com/blog/2019/05/01/automated-migration-from-jboss-a-mq-6-to-red-hat-amq-7-on-red-hat-openshift)
+
+This repository demonstrates how to migrate your Messaging Brokers deployed in OpenShift from Red Hat JBoss A-MQ 6.3 to
 Red Hat JBoss AMQ 7.3. This migration includes:
 
 * Zero down-time in your current Messaging Services.
